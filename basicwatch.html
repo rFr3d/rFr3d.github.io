@@ -1,0 +1,36 @@
+<!doctype html>
+<html ng-app>
+  <head>
+    <script src="./angular.min.js"></script>
+  </head>
+  <body>
+    <form ng-controller="StartUpController">
+      Starting: <input ng-model="funding.startingEstimate">
+      Recommendation: {{funding.needed}}
+      <button ng-click="requestFunding()">Fund my startup!</button>
+      <button ng-click="reset()">Reset</button>
+    </form>
+    <script>
+      function StartUpController($scope) {
+        $scope.funding = { startingEstimate: 0 };
+
+        computeNeeded = function() {
+          $scope.funding.needed = $scope.funding.startingEstimate * 10;
+        };
+        
+        //Calls computeNeeded whenever startingEstimate changes, front-end or back-end. "But what if other inputs bind to this property in the model? What if it gets updated when data comes in from the server?""
+        $scope.$watch('funding.startingEstimate', computeNeeded);
+        //Note that the expression to watch is in quotes. Yes, it is a string. This string is evaluated as something called an Angular expression. Expressions can do simple operations and have access to the properties in the $scope object. 
+
+        $scope.requestFunding = function() {
+          window.alert("Sorry, please get more customers first.");
+        };
+
+        $scope.reset = function() {
+          $scope.funding.startingEstimate = 0;
+          $scope.funding.needed = 0;
+        };
+      }
+    </script>
+  </body>
+</html>
